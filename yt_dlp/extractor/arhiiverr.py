@@ -2,6 +2,7 @@ from .common import InfoExtractor
 from .. import int_or_none
 from ..utils import (
     traverse_obj,
+    unified_timestamp,
 )
 
 
@@ -29,21 +30,15 @@ class ArhiivErrIE(InfoExtractor):
     def _real_extract(self, url):
         video_id = self._match_id(url)
         content_url = f"https://arhiiv.err.ee/api/v1/content/video/{video_id}"
-        data = traverse_obj(self._download_json(content_url, video_id), 'data')
-        import json
-        print(json.dumps(data))
-        formats = []
-        for url in traverse_obj(data, ('mainContent', 'medias', ..., 'src', 'hls')):
-            formats.extend(self._extract_m3u8_formats(url, video_id, 'mp4'))
+        data = self._download_json(content_url, video_id)
 
         return {
             'id': video_id,
-            'title': traverse_obj(data, ('mainContent', 'subHeading')),
-            'description': traverse_obj(data, ('mainContent', 'lead')),
-            'formats': formats,
-            'timestamp': traverse_obj(data, ('mainContent', 'scheduleStart')),
-            'series': traverse_obj(data, ('mainContent', 'heading')),
-            'season_number': int_or_none(traverse_obj(data, ('mainContent', 'season'))),
-            'episode': traverse_obj(data, ('mainContent', 'subHeading')),
-            'episode_number': int_or_none(traverse_obj(data, ('mainContent', 'episode'))),
+            'title': traverse_obj(data, ('info', 'title')),
+            'description': traverse_obj(data, ('info', 'description')),
+            'formats': self._extract_m3u8_formats(traverse_obj(data, ('media', 'src', 'hls')), video_id),
+            'timestamp': unified_timestamp(traverse_obj(data, ('info', 'date'))),
+            'series': traverse_obj(data, ('info', 'seriesTitle')),
+            'episode': traverse_obj(data, ('info', 'title')),
+            'episode_number': int_or_none(traverse_obj(data, ('info', 'episode'))),
         }
