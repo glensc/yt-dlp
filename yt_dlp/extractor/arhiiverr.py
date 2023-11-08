@@ -9,21 +9,18 @@ from ..utils import (
 class ArhiivErrIE(InfoExtractor):
     _VALID_URL = r'https://arhiiv\.err\.ee/video/vaata/(?P<id>.+)$'
     _TESTS = [{
-        'note': 'S01E06: Impulss',
         'url': 'https://arhiiv.err.ee/video/vaata/pealtnagija-481',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
         'info_dict': {
-            'id': '1609145945',
+            'id': 'pealtnagija-481',
             'ext': 'mp4',
-            'title': 'Loteriipilet hooldekodusse',
-            'description': 'md5:d1770e868afffd5d42b886283574941e',
-            'upload_date': '20231107',
-            'timestamp': 1699380000,
-            'series': 'Impulss',
-            'season': 'Season 1',
-            'season_number': 1,
-            'episode': 'Loteriipilet hooldekodusse',
-            'episode_number': 6,
+            'title': 'Pealtnägija : 481',
+            'description': 'md5:d41d8cd98f00b204e9800998ecf8427e',
+            'upload_date': '20121114',
+            'timestamp': 1352851200,
+            'series': 'Pealtnägija',
+            'episode': 'Pealtnägija : 481',
+            'episode_number': 481,
         },
     }]
 
