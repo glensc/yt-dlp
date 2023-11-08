@@ -9,7 +9,7 @@ class ArhiivErrIE(InfoExtractor):
     _VALID_URL = r'https://jupiter\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
         'note': 'S01E06: Impulss',
-        'url': 'https://jupiter.err.ee/1609145945/impulss',
+        'url': 'https://arhiiv.err.ee/video/vaata/pealtnagija-481',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
         'info_dict': {
             'id': '1609145945',
