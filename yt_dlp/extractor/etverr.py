@@ -2,8 +2,8 @@ from .common import InfoExtractor
 from ..utils import (
     traverse_obj,
     int_or_none,
-    unified_timestamp,
     url_or_none,
+    parse_iso8601,
 )
 
 
@@ -34,18 +34,16 @@ class EtvErrIE(InfoExtractor):
         data = self._download_json(content_url, video_id)
         hls = traverse_obj(data, ('showInfo', 'media', 'src', 'hls'))
         formats, subtitles = self._extract_m3u8_formats_and_subtitles(hls, video_id)
-        timestamp = unified_timestamp(traverse_obj(data, ('seoData', 'ogPublishTime')))
-        print(timestamp)
 
         return {
             'id': video_id,
             'formats': formats,
             'subtitles': subtitles,
-            'timestamp': timestamp,
             **traverse_obj(data, {
                 'title': ('showInfo', 'programSubTitle', {str}),
                 'description': ('showInfo', 'programLead', {str}),
                 'thumbnail': ('showInfo', 'media', 'thumbnail', 'url', {url_or_none}),
+                'timestamp': ('seoData', 'ogPublishTime', {parse_iso8601}),
                 'series': ('showInfo', 'programName', {str}),
                 'season_number': ('pageControlData', 'mainContent', 'season', {int_or_none}),
                 'episode': ('showInfo', 'programSubTitle', {str}),
