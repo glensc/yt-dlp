@@ -5,7 +5,7 @@ from ..utils import (
 )
 
 
-class JupiterIE(InfoExtractor):
+class ArhiivErrIE(InfoExtractor):
     _VALID_URL = r'https://jupiter\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
         'note': 'S01E06: Impulss',
