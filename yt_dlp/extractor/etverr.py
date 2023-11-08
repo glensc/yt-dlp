@@ -7,7 +7,6 @@ from ..utils import (
 
 
 class EtvErrIE(InfoExtractor):
-    # _VALID_URL = r'https://arhiiv\.err\.ee/video/vaata/(?P<id>.+)$'
     _VALID_URL = r'https://etv\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
         'url': 'https://etv.err.ee/1609138376/pealtnagija',
