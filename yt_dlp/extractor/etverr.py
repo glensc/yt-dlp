@@ -1,12 +1,11 @@
 from .common import InfoExtractor
-from .. import int_or_none
 from ..utils import (
     traverse_obj,
-    unified_timestamp,
+    int_or_none,
 )
 
 
-class ArhiivErrIE(InfoExtractor):
+class EtvErrIE(InfoExtractor):
     # _VALID_URL = r'https://arhiiv\.err\.ee/video/vaata/(?P<id>.+)$'
     _VALID_URL = r'https://etv\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
