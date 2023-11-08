@@ -3,6 +3,7 @@ from ..utils import (
     traverse_obj,
     int_or_none,
     unified_timestamp,
+    url_or_none,
 )
 
 
@@ -38,14 +39,16 @@ class EtvErrIE(InfoExtractor):
 
         return {
             'id': video_id,
-            'title': traverse_obj(data, ('showInfo', 'programSubTitle')),
-            'description': traverse_obj(data, ('showInfo', 'programLead')),
-            'thumbnail': traverse_obj(data, ('showInfo', 'media', 'thumbnail', 'url')),
             'formats': formats,
             'subtitles': subtitles,
             'timestamp': timestamp,
-            'series': traverse_obj(data, ('showInfo', 'programName')),
-            'season_number': int_or_none(traverse_obj(data, ('pageControlData', 'mainContent', 'season'))),
-            'episode': traverse_obj(data, ('showInfo', 'programSubTitle')),
-            'episode_number': int_or_none(traverse_obj(data, ('pageControlData', 'mainContent', 'episode'))),
+            **traverse_obj(data, {
+                'title': ('showInfo', 'programSubTitle', {str}),
+                'description': ('showInfo', 'programLead', {str}),
+                'thumbnail': ('showInfo', 'media', 'thumbnail', 'url', {url_or_none}),
+                'series': ('showInfo', 'programName', {str}),
+                'season_number': ('pageControlData', 'mainContent', 'season', {int_or_none}),
+                'episode': ('showInfo', 'programSubTitle', {str}),
+                'episode_number': ('pageControlData', 'mainContent', 'episode', {int_or_none}),
+            }),
         }
