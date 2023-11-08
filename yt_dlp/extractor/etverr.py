@@ -30,15 +30,11 @@ class EtvErrIE(InfoExtractor):
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        # content_url = f"https://etv.err.ee/api/tv/getTvPageData?contentId={video_id}&parentContentId=1038446&categoryDataOnly=false"
         content_url = f"https://etv.err.ee/api/tv/getTvPageData?contentId={video_id}"
         data = self._download_json(content_url, video_id)
-
-        # hls = traverse_obj(data, ('showInfo', 'media', 'src', 'hlsNoSub'))
         hls = traverse_obj(data, ('showInfo', 'media', 'src', 'hls'))
         formats, subtitles = self._extract_m3u8_formats_and_subtitles(hls, video_id)
-        print(hls)
-        print(subtitles)
+
         return {
             'id': video_id,
             'title': traverse_obj(data, ('showInfo', 'programSubTitle')),
