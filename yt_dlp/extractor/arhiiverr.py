@@ -6,7 +6,7 @@ from ..utils import (
 
 
 class ArhiivErrIE(InfoExtractor):
-    _VALID_URL = r'https://jupiter\.err\.ee/(?P<id>\d+)/'
+    _VALID_URL = r'https://arhiiv\.err\.ee/video/vaata/(?P<id>.+)$'
     _TESTS = [{
         'note': 'S01E06: Impulss',
         'url': 'https://arhiiv.err.ee/video/vaata/pealtnagija-481',
@@ -28,7 +28,7 @@ class ArhiivErrIE(InfoExtractor):
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        content_url = f"https://services.err.ee/api/v2/vodContent/getContentPageData?contentId={video_id}"
+        content_url = f"https://arhiiv.err.ee/api/v1/content/video/{video_id}"
         data = traverse_obj(self._download_json(content_url, video_id), 'data')
         import json
         print(json.dumps(data))
