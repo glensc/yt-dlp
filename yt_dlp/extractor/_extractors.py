@@ -124,6 +124,7 @@ from .archiveorg import (
     YoutubeWebArchiveIE,
 )
 from .arcpublishing import ArcPublishingIE
+from .arhiiverr import ArhiivErrIE
 from .arkena import ArkenaIE
 from .ard import (
     ARDBetaMediathekIE,
