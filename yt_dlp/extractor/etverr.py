@@ -33,6 +33,8 @@ class EtvErrIE(InfoExtractor):
         data = self._download_json(content_url, video_id)
         hls = traverse_obj(data, ('showInfo', 'media', 'src', 'hls'))
         formats, subtitles = self._extract_m3u8_formats_and_subtitles(hls, video_id)
+        timestamp = unified_timestamp(traverse_obj(data, ('seoData', 'ogPublishTime')))
+        print(timestamp)
 
         return {
             'id': video_id,
@@ -41,7 +43,7 @@ class EtvErrIE(InfoExtractor):
             'thumbnail': traverse_obj(data, ('showInfo', 'media', 'thumbnail', 'url')),
             'formats': formats,
             'subtitles': subtitles,
-            'timestamp': unified_timestamp(traverse_obj(data, ('seoData', 'ogPublishTime'))),
+            'timestamp': timestamp,
             'series': traverse_obj(data, ('showInfo', 'programName')),
             'season_number': int_or_none(traverse_obj(data, ('pageControlData', 'mainContent', 'season'))),
             'episode': traverse_obj(data, ('showInfo', 'programSubTitle')),
