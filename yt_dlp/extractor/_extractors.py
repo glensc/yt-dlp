@@ -595,6 +595,7 @@ from .espn import (
 )
 from .esri import EsriVideoIE
 from .ettutv import EttuTvIE
+from .etverr import EtvErrIE
 from .europa import EuropaIE, EuroParlWebstreamIE
 from .europeantour import EuropeanTourIE
 from .eurosport import EurosportIE
