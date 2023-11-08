@@ -2,6 +2,7 @@ from .common import InfoExtractor
 from ..utils import (
     traverse_obj,
     int_or_none,
+    unified_timestamp,
 )
 
 
@@ -33,13 +34,15 @@ class EtvErrIE(InfoExtractor):
         content_url = f"https://etv.err.ee/api/tv/getTvPageData?contentId={video_id}"
         data = self._download_json(content_url, video_id)
 
+        hls = traverse_obj(data, ('showInfo', 'media', 'src', 'hlsNoSub'))
+        print(hls)
         return {
             'id': video_id,
             'title': traverse_obj(data, ('showInfo', 'programSubTitle')),
             'description': traverse_obj(data, ('showInfo', 'programLead')),
             'thumbnail': traverse_obj(data, ('showInfo', 'media', 'thumbnail', 'url')),
-            'formats': self._extract_m3u8_formats(traverse_obj(data, ('showInfo', 'media', 'src', 'hls')), video_id),
-            'timestamp': traverse_obj(data, ('seoData', 'ogPublishTime')),
+            'formats': self._extract_m3u8_formats(hls, video_id),
+            'timestamp': unified_timestamp(traverse_obj(data, ('seoData', 'ogPublishTime'))),
             'series': traverse_obj(data, ('showInfo', 'programName')),
             'season_number': int_or_none(traverse_obj(data, ('pageControlData', 'mainContent', 'season'))),
             'episode': traverse_obj(data, ('showInfo', 'programSubTitle')),
