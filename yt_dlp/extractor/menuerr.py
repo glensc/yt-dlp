@@ -43,12 +43,14 @@ class MenuerrIE(InfoExtractor):
             'id': video_id,
             'formats': formats,
             'subtitles': subtitles,
+            # Movies
             **traverse_obj(data, {
                 'title': 'heading',
                 'description': 'lead',
                 'release_year': ('year', {int_or_none}),
                 'timestamp': 'publicStart',
             }),
+            # Shows
             **(traverse_obj(data, {
                 'series': 'heading',
                 'series_id': ('rootContentId', {int_or_none}),
