@@ -1042,11 +1042,11 @@ from .mediastream import (
     WinSportsVideoIE,
 )
 from .mediaworksnz import MediaWorksNZVODIE
-from .menuerr import MenuerrIE
 from .medici import MediciIE
 from .megaphone import MegaphoneIE
 from .meipai import MeipaiIE
 from .melonvod import MelonVODIE
+from .menuerr import MenuerrIE
 from .metacritic import MetacriticIE
 from .mgtv import MGTVIE
 from .miaopai import MiaoPaiIE
