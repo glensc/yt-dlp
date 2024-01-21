@@ -44,7 +44,7 @@ class MenuerrIE(InfoExtractor):
             'formats': formats,
             'subtitles': subtitles,
             **traverse_obj(data, {
-                'title': 'subHeading',
+                'title': 'heading',
                 'description': 'lead',
                 'release_year': ('year', {int_or_none}),
                 'timestamp': 'scheduleStart',
