@@ -47,7 +47,7 @@ class MenuerrIE(InfoExtractor):
                 'title': 'heading',
                 'description': 'lead',
                 'release_year': ('year', {int_or_none}),
-                'timestamp': 'scheduleStart',
+                'timestamp': 'publicStart',
                 # 'series': 'heading',
                 # 'series_id': ('rootContentId', {int_or_none}),
                 # 'episode': 'subHeading',
