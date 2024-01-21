@@ -48,11 +48,13 @@ class MenuerrIE(InfoExtractor):
                 'description': 'lead',
                 'release_year': ('year', {int_or_none}),
                 'timestamp': 'publicStart',
-                # 'series': 'heading',
-                # 'series_id': ('rootContentId', {int_or_none}),
-                # 'episode': 'subHeading',
-                # 'season_number': ('season', {int_or_none}),
-                # 'episode_number': ('episode', {int_or_none}),
-                # 'episode_id': ('id', {int_or_none}),
             }),
+            **(traverse_obj(data, {
+                'series': 'heading',
+                'series_id': ('rootContentId', {int_or_none}),
+                'episode': 'subHeading',
+                'season_number': ('season', {int_or_none}),
+                'episode_number': ('episode', {int_or_none}),
+                'episode_id': ('id', {int_or_none}),
+            }, get_all=False) if data.get('rootContentId') != '0' else {})
         }
