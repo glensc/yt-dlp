@@ -5,11 +5,10 @@ from ..utils import (
 )
 
 
-class JupiterIE(InfoExtractor):
-    _VALID_URL = r'https://jupiter\.err\.ee/(?P<id>\d+)/'
+class MenuerrIE(InfoExtractor):
+    _VALID_URL = r'https://menu\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
-        'note': 'S01E06: Impulss',
-        'url': 'https://jupiter.err.ee/1609145945/impulss',
+        'url': 'https://menu.err.ee/1609228458/video-ott-sepa-ja-mart-avandi-eesti-laulu-vaheklipp-tartu-24',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
         'info_dict': {
             'id': '1609145945',
