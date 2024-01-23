@@ -102,10 +102,11 @@ class CommunionAfterDarkIE(InfoExtractor):
         tags = [tag for tag in divs or [] if (
             "Tracklisting" in tag or "Track listing" in tag or "Listener Comments" in tag
         )]
-        if tags is None or len(tags) != 1:
-            raise RuntimeError("Failed to find track listing")
 
-        p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tags[0])]
+        if tags is None:
+            raise RuntimeError("Failed to find track listing")
+        tag = "\n".join(tags)
+        p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tag)]
 
         return "\n".join(p)
 
