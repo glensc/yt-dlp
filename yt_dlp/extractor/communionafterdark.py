@@ -11,7 +11,7 @@ from ..utils import (
 class CommunionAfterDarkListingIE(InfoExtractor):
     _VALID_URL = r'https://www\.communionafterdark\.com/listennow'
     _TESTS = [{
-        'url': 'https://www.communionafterdark.com/listennow/535kxa6akttbzhkxblzbawr46esabw',
+        'url': 'https://www.communionafterdark.com/listennow',
         'md5': '583a75874aa1fa1368eecad4dc225532',
         'info_dict': {
             'id': '535kxa6akttbzhkxblzbawr46esabw',
