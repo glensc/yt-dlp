@@ -26,6 +26,31 @@ class CommunionAfterDarkListingIE(InfoExtractor):
         },
     }]
 
+    def _real_extract(self, url):
+        webpage = self._download_webpage(url, 'index')
+
+        tags = try_call(lambda: get_elements_by_class('BlogList-item-image', webpage))
+        if not tags:
+            return None
+
+        links = []
+        for tag in tags:
+            link: str | None = try_call(
+                lambda: extract_attributes(get_element_text_and_html_by_tag('a', tag)[1])['href'])
+            if not link:
+                continue
+            if link.startswith('/listennow/'):
+                links.append(f'https://www.communionafterdark.com{link}')
+
+        # result = self.playlist_result(links)
+        # return result
+
+        result = self.playlist_result([self.url_result(link) for link in links])
+        import json
+        print(json.dumps(result))
+        # print(result)
+        return result
+
 
 class CommunionAfterDarkIE(InfoExtractor):
     _VALID_URL = r'https://www\.communionafterdark\.com/listennow/(?P<id>[\d\w]+)'
