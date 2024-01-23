@@ -97,7 +97,7 @@ class CommunionAfterDarkIE(InfoExtractor):
             return link
 
     @staticmethod
-    def extract_description_and_title(webpage):
+    def extract_description(webpage):
         divs = try_call(lambda: get_elements_by_class("sqs-html-content", webpage))
         tags = [tag for tag in divs or [] if (
             "Tracklisting" in tag or "Track listing" in tag or "Listener Comments" in tag
@@ -106,15 +106,14 @@ class CommunionAfterDarkIE(InfoExtractor):
             raise RuntimeError("Failed to find track listing")
 
         p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tags[0])]
-        title = p.pop(0)
-        title = re.sub(r'Track\s?listing\s*?', '', title).strip()
 
-        return title, "\n".join(p)
+        return "\n".join(p)
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
         webpage = self._download_webpage(url, video_id)
-        title, description = self.extract_description_and_title(webpage)
+        description = self.extract_description(webpage)
+        title = self._html_search_meta('og:title', webpage)
         audio_url = self.extract_url(webpage)
         timestamp = self._html_search_meta('datePublished', webpage, default=None)
         upload_date = unified_strdate(timestamp)
