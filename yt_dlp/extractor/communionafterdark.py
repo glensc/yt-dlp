@@ -89,7 +89,7 @@ class CommunionAfterDarkIE(InfoExtractor):
 
         p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tag)]
         title = p.pop(0)
-        title = re.sub(r'Track\s?listing\s*?', '', title)
+        title = re.sub(r'Track\s?listing\s*?', '', title).strip()
 
         return title, "\n".join(p)
 
