@@ -12,22 +12,17 @@ class CommunionAfterDarkIE(InfoExtractor):
     _VALID_URL = r'https://www\.communionafterdark\.com/listennow/(?P<id>[\d\w]+)'
     _TESTS = [{
         'url': 'https://www.communionafterdark.com/listennow/535kxa6akttbzhkxblzbawr46esabw',
-        'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
+        'md5': '583a75874aa1fa1368eecad4dc225532',
         'info_dict': {
-            'id': '1609145945',
-            'ext': 'mp4',
-            'title': 'Loteriipilet hooldekodusse',
-            'description': 'md5:fa8a2ed0cdccb130211513443ee4d571',
-            'upload_date': '20231107',
-            'timestamp': 1699380000,
-            'series': 'Impulss',
-            'season': 'Season 1',
-            'season_number': 1,
-            'episode': 'Loteriipilet hooldekodusse',
-            'episode_number': 6,
-            'series_id': 1609108187,
-            'release_year': 2023,
-            'episode_id': 1609145945,
+            'id': '535kxa6akttbzhkxblzbawr46esabw',
+            'ext': 'mp3',
+            'title': 'January 22nd, 2024',
+            'description': 'md5:7c420a1c1ec6a51b861594e7b71041be',
+            'upload_date': '20240122',
+            'release_date': '20240122',
+            'timestamp': 1705939304,
+            'uploader': 'Sherri Maus',
+            'release_year': 2024,
         },
     }]
 
