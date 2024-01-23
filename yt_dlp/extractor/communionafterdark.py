@@ -5,7 +5,7 @@ from ..utils import (
 )
 
 
-class MenuerrIE(JupiterIE):
+class CommunionAfterDarkIE(JupiterIE):
     _VALID_URL = r'https://menu\.err\.ee/(?P<id>\d+)/'
     _TESTS = [{
         'url': 'https://menu.err.ee/1609228458/video-ott-sepa-ja-mart-avandi-eesti-laulu-vaheklipp-tartu-24',
