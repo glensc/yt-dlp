@@ -1,14 +1,15 @@
 from .jupiter import JupiterIE
 from .. import int_or_none
 from ..utils import (
-    traverse_obj,
+    traverse_obj, try_call, extract_attributes, get_element_text_and_html_by_tag, ExtractorError,
+    get_elements_text_and_html_by_attribute, get_elements_by_class,
 )
 
 
 class CommunionAfterDarkIE(JupiterIE):
-    _VALID_URL = r'https://menu\.err\.ee/(?P<id>\d+)/'
+    _VALID_URL = r'https://www\.communionafterdark\.com/listennow/(?P<id>[\d\w]+)'
     _TESTS = [{
-        'url': 'https://menu.err.ee/1609228458/video-ott-sepa-ja-mart-avandi-eesti-laulu-vaheklipp-tartu-24',
+        'url': 'https://www.communionafterdark.com/listennow/535kxa6akttbzhkxblzbawr46esabw',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
         'info_dict': {
             'id': '1609145945',
@@ -28,39 +29,25 @@ class CommunionAfterDarkIE(JupiterIE):
         },
     }]
 
+    def extract_url(self, url, video_id):
+        webpage = self._download_webpage(url, video_id)
+        # tags = try_call(lambda: extract_attributes(
+        #     get_element_text_and_html_by_tag('a', webpage)[1]))
+        # tags = try_call(lambda: get_element_text_and_html_by_tag('a', webpage))
+        # tags = try_call(lambda: get_elements_text_and_html_by_attribute('sqs-html-content', webpage))
+        tags = try_call(lambda: get_elements_by_class('sqs-html-content', webpage))
+
+        for tag in tags:
+            # link = try_call(lambda: get_elements_by_class('sqs-html-content', tag))
+            link = try_call(lambda: extract_attributes(get_element_text_and_html_by_tag('a', tag)[1])['href'])
+            if not link:
+                continue
+            if "https://www.buzzsprout.com/" not in link:
+                continue
+            return link
+
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        content_url = f"https://services.err.ee/api/v2/vodContent/getContentPageData?contentId={video_id}"
-        data = traverse_obj(self._download_json(content_url, video_id), ('data', 'mainContent'))
-        import json
-        print(json.dumps(data))
+        audio_url = self.extract_url(url, video_id)
 
-        formats, subtitles = [], {}
-        for url in traverse_obj(data, ('medias', ..., 'src', 'hls')):
-            fmts, subs = self._extract_m3u8_formats_and_subtitles(url, video_id, 'mp4')
-            formats.extend(fmts)
-            subtitles = self._merge_subtitles(subtitles, subs)
-
-        res = {
-            'id': video_id,
-            'formats': formats,
-            'subtitles': subtitles,
-            # Movies
-            **traverse_obj(data, {
-                'title': 'heading',
-                'description': 'lead',
-                'release_year': ('year', {int_or_none}),
-                'timestamp': 'publicStart',
-            }),
-            # Shows
-            **(traverse_obj(data, {
-                'series': 'heading',
-                'series_id': ('rootContentId', {int_or_none}),
-                'episode': 'subHeading',
-                'season_number': ('season', {int_or_none}),
-                'episode_number': ('episode', {int_or_none}),
-                'episode_id': ('id', {int_or_none}),
-            }, get_all=False) if data.get('rootContentId') != '0' else {})
-        }
-        print(json.dumps(res))
-        return res
+        raise RuntimeError()
