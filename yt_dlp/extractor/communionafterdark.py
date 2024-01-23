@@ -42,17 +42,10 @@ class CommunionAfterDarkListingIE(InfoExtractor):
             if link.startswith('/listennow/'):
                 links.append(f'https://www.communionafterdark.com{link}')
 
-        # result = self.playlist_result(links)
-        # return result
-
-        result = self.playlist_result(
+        return self.playlist_result(
             playlist_title='Latest',
             entries=[self.url_result(link) for link in links]
         )
-        import json
-        print(json.dumps(result))
-        # print(result)
-        return result
 
 
 class CommunionAfterDarkIE(InfoExtractor):
@@ -108,7 +101,7 @@ class CommunionAfterDarkIE(InfoExtractor):
         upload_date = unified_strdate(timestamp)
         author = self._html_search_meta('author', webpage, default=None)
 
-        res = {
+        return {
             'id': video_id,
             'title': title,
             'description': description,
@@ -119,6 +112,3 @@ class CommunionAfterDarkIE(InfoExtractor):
             'uploader': author,
             'was_live': True,
         }
-        import json
-        print(json.dumps(res))
-        return res
