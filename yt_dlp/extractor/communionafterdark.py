@@ -27,7 +27,7 @@ class CommunionAfterDarkListingIE(InfoExtractor):
     }]
 
     def _real_extract(self, url):
-        webpage = self._download_webpage(url, 'index')
+        webpage = self._download_webpage(url, 'latest')
 
         tags = try_call(lambda: get_elements_by_class('BlogList-item-image', webpage))
         if not tags:
@@ -45,7 +45,10 @@ class CommunionAfterDarkListingIE(InfoExtractor):
         # result = self.playlist_result(links)
         # return result
 
-        result = self.playlist_result([self.url_result(link) for link in links])
+        result = self.playlist_result(
+            playlist_title='Latest',
+            entries=[self.url_result(link) for link in links]
+        )
         import json
         print(json.dumps(result))
         # print(result)
