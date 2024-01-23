@@ -99,11 +99,13 @@ class CommunionAfterDarkIE(InfoExtractor):
     @staticmethod
     def extract_description_and_title(webpage):
         divs = try_call(lambda: get_elements_by_class("sqs-html-content", webpage))
-        tag = try_call(lambda: [tag for tag in divs or [] if "Tracklisting" in tag or "Track listing" in tag][0])
-        if tag is None:
+        tags = [tag for tag in divs or [] if (
+            "Tracklisting" in tag or "Track listing" in tag or "Listener Comments" in tag
+        )]
+        if tags is None or len(tags) != 1:
             raise RuntimeError("Failed to find track listing")
 
-        p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tag)]
+        p = [clean_html(c.strip()) for c in re.findall(r'(?s)<p.*?>(.*?)</p>', tags[0])]
         title = p.pop(0)
         title = re.sub(r'Track\s?listing\s*?', '', title).strip()
 
