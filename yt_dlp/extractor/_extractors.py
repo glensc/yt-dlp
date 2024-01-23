@@ -387,7 +387,7 @@ from .commonprotocols import (
     RtmpIE,
     ViewSourceIE,
 )
-from .communionafterdark import MenuerrIE
+from .communionafterdark import CommunionAfterDarkIE
 from .condenast import CondeNastIE
 from .contv import CONtvIE
 from .corus import CorusIE
