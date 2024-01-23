@@ -110,7 +110,7 @@ class CommunionAfterDarkIE(JupiterIE):
             'title': title,
             'description': description,
             'url': audio_url,
-            'timestamp': timestamp,
+            'timestamp': unified_timestamp(timestamp),
             'upload_date': upload_date,
             'release_date': upload_date,
             'uploader': author,
