@@ -9,9 +9,23 @@ from ..utils import (
 
 
 class CommunionAfterDarkListingIE(InfoExtractor):
-    _VALID_URL = r'https://www\.communionafterdark\.com/listennow'
+    _VALID_URL = r'https://www\.communionafterdark\.com/listennow(\?offset=(?P<offset>\d+))?'
     _TESTS = [{
         'url': 'https://www.communionafterdark.com/listennow',
+        'md5': '583a75874aa1fa1368eecad4dc225532',
+        'info_dict': {
+            'id': '535kxa6akttbzhkxblzbawr46esabw',
+            'ext': 'mp3',
+            'title': 'January 22nd, 2024',
+            'description': 'md5:7c420a1c1ec6a51b861594e7b71041be',
+            'upload_date': '20240122',
+            'release_date': '20240122',
+            'timestamp': 1705939304,
+            'uploader': 'Sherri Maus',
+            'release_year': 2024,
+        },
+    }, {
+        'url': 'https://www.communionafterdark.com/listennow?offset=1694443682010',
         'md5': '583a75874aa1fa1368eecad4dc225532',
         'info_dict': {
             'id': '535kxa6akttbzhkxblzbawr46esabw',
@@ -27,7 +41,9 @@ class CommunionAfterDarkListingIE(InfoExtractor):
     }]
 
     def _real_extract(self, url):
-        webpage = self._download_webpage(url, 'latest')
+        offset = self._match_valid_url(url).group('offset')
+        page_id = f"index at {offset}" if offset else "index"
+        webpage = self._download_webpage(url, page_id)
 
         tags = try_call(lambda: get_elements_by_class('BlogList-item-image', webpage))
         if not tags:
