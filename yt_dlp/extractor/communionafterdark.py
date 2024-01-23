@@ -31,14 +31,11 @@ class CommunionAfterDarkIE(JupiterIE):
 
     def extract_url(self, url, video_id):
         webpage = self._download_webpage(url, video_id)
-        # tags = try_call(lambda: extract_attributes(
-        #     get_element_text_and_html_by_tag('a', webpage)[1]))
-        # tags = try_call(lambda: get_element_text_and_html_by_tag('a', webpage))
-        # tags = try_call(lambda: get_elements_text_and_html_by_attribute('sqs-html-content', webpage))
         tags = try_call(lambda: get_elements_by_class('sqs-html-content', webpage))
+        if not tags:
+            return None
 
         for tag in tags:
-            # link = try_call(lambda: get_elements_by_class('sqs-html-content', tag))
             link = try_call(lambda: extract_attributes(get_element_text_and_html_by_tag('a', tag)[1])['href'])
             if not link:
                 continue
