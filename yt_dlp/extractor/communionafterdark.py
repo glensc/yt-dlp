@@ -42,7 +42,7 @@ class CommunionAfterDarkListingIE(InfoExtractor):
 
     def _real_extract(self, url):
         offset = self._match_valid_url(url).group('offset')
-        page_id = f"index at {offset}" if offset else "index"
+        page_id = f"index at {offset}" if offset else "latest index"
         webpage = self._download_webpage(url, page_id)
 
         tags = try_call(lambda: get_elements_by_class('BlogList-item-image', webpage))
@@ -59,7 +59,7 @@ class CommunionAfterDarkListingIE(InfoExtractor):
                 links.append(f'https://www.communionafterdark.com{link}')
 
         return self.playlist_result(
-            playlist_title='Latest',
+            playlist_title=page_id,
             entries=[self.url_result(link) for link in links]
         )
 
