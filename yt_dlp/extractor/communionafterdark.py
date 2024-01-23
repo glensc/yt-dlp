@@ -1,6 +1,6 @@
 import re
 
-from .jupiter import JupiterIE
+from .common import InfoExtractor
 from ..utils import (
     try_call, extract_attributes, get_element_text_and_html_by_tag,
     get_elements_by_class,
@@ -8,7 +8,7 @@ from ..utils import (
 )
 
 
-class CommunionAfterDarkIE(JupiterIE):
+class CommunionAfterDarkIE(InfoExtractor):
     _VALID_URL = r'https://www\.communionafterdark\.com/listennow/(?P<id>[\d\w]+)'
     _TESTS = [{
         'url': 'https://www.communionafterdark.com/listennow/535kxa6akttbzhkxblzbawr46esabw',
