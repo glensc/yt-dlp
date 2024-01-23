@@ -91,7 +91,8 @@ class CommunionAfterDarkIE(JupiterIE):
 
 
         # search_meta = ((lambda x: self._html_search_meta(x, webpage, default=None)) if webpage else (lambda x: None))
-        upload_date = unified_strdate(self._html_search_meta('datePublished', webpage, default=None))
+        timestamp = self._html_search_meta('datePublished', webpage, default=None)
+        upload_date = unified_strdate(timestamp)
         author = self._html_search_meta('author', webpage, default=None)
         # ) if webpage else (lambda x: None))
 
@@ -109,8 +110,11 @@ class CommunionAfterDarkIE(JupiterIE):
             'title': title,
             'description': description,
             'url': audio_url,
+            'timestamp': timestamp,
             'upload_date': upload_date,
+            'release_date': upload_date,
             'uploader': author,
+            'was_live': True,
 
             # 'timestamp': unified_timestamp(title),
             # 'formats': formats,
