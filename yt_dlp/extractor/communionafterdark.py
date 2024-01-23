@@ -6,7 +6,7 @@ from ..compat import compat_etree_fromstring
 from ..utils import (
     traverse_obj, try_call, extract_attributes, get_element_text_and_html_by_tag, ExtractorError,
     get_elements_text_and_html_by_attribute, get_elements_by_class, get_elements_html_by_class, xpath_text,
-    xpath_element, clean_html,
+    xpath_element, clean_html, unified_timestamp, unified_strdate,
 )
 
 
@@ -85,11 +85,34 @@ class CommunionAfterDarkIE(JupiterIE):
         title, description = self.extract_description_and_title(webpage)
         audio_url = self.extract_url(webpage)
 
+        #
+# <meta itemprop="datePublished" content="2023-10-30T20:40:02-0400"/>
+# <meta itemprop="dateModified" content="2023-10-30T20:40:03-0400"/>
+
+
+        # search_meta = ((lambda x: self._html_search_meta(x, webpage, default=None)) if webpage else (lambda x: None))
+        upload_date = unified_strdate(self._html_search_meta('datePublished', webpage, default=None))
+        author = self._html_search_meta('author', webpage, default=None)
+        # ) if webpage else (lambda x: None))
+
+        # upload_date = unified_strdate(
+            # dict_get(microformats, ('uploadDate', 'publishDate'))
+            # or search_meta(['uploadDate', 'datePublished'])
+            # or self._search_regex(
+            #     [r'(?s)id="eow-date.*?>\s*(.*?)\s*</span>',
+            #      r'(?:id="watch-uploader-info".*?>.*?|["\']simpleText["\']\s*:\s*["\'])(?:Published|Uploaded|Streamed live|Started) on (.+?)[<"\']',  # @7998520
+            #      r'class\s*=\s*"(?:watch-video-date|watch-video-added post-date)"[^>]*>\s*([^<]+?)\s*<'],  # ~June 2010, ~Jan 2009 (respectively)
+            #     webpage, 'upload date', default=None))
+
         res = {
             'id': video_id,
             'title': title,
             'description': description,
             'url': audio_url,
+            'upload_date': upload_date,
+            'uploader': author,
+
+            # 'timestamp': unified_timestamp(title),
             # 'formats': formats,
             # 'subtitles': subtitles,
             # # Movies
