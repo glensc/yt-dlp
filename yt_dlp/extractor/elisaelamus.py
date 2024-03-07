@@ -63,10 +63,12 @@ class ElisaElamusIE(InfoExtractor):
                 'season': ('Series', 'ChildSeriesCollection', 'Series', 'Name'),
             }),
             'episode_number': episode_index,
-            'duration': episode_data["DurationInSeconds"],
-            'description': episode_data["MediumSynopsis"],
-            'release_year': episode_data["ProductionDate"],
-            'cast': traverse_obj(episode_data, ('Actors', 'Actor')),
+            **traverse_obj(episode_data, {
+                'duration': 'DurationInSeconds',
+                'description': 'MediumSynopsis',
+                'release_year': ('ProductionDate', {int_or_none}),
+                'cast': ('Actors', 'Actor'),
+            }),
         }
         print(json.dumps(res))
         return res
