@@ -3,7 +3,7 @@ import json
 from .common import InfoExtractor
 from .. import int_or_none
 from ..utils import (
-    traverse_obj, join_nonempty,
+    traverse_obj, join_nonempty, unified_timestamp, try_call,
 )
 
 
@@ -70,6 +70,7 @@ class ElisaElamusIE(InfoExtractor):
                 'cast': ('Actors', 'Actor'),
                 'creators': ('Directors', 'Director'),
             }),
+            'timestamp': unified_timestamp(next(iter(traverse_obj(episode_data, ('Contents', 'Content', ..., 'FirstAvailability'))))),
         }
         print(json.dumps(res))
         return res
