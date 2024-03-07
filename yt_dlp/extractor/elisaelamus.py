@@ -8,7 +8,7 @@ from ..utils import (
 
 
 class ElisaElamusIE(InfoExtractor):
-    _VALID_URL = r'https://elisaelamus\.ee(?:/huub)?/seriaalid/(?P<id>crid[^?]+)\?episode=(?P<ep>crid[^?]+)'
+    _VALID_URL = r'https://elisaelamus\.ee(?:/huub)?/seriaalid/(?P<id>crid[^?]+)\?episode=(?P<ep>crid[^$]+)'
     _TESTS = [{
         'url': 'https://elisaelamus.ee/seriaalid/crid:~~2F~~2Fschange~dotcom~~2F9469d800-ee7b-4e2a-8980-6303a3f68831?episode=crid%3A%7E%7E2F%7E%7E2Fschange.com%7E%7E2Fteeveekolm.ee%7E%7E2FTEEB2024020716150058',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
@@ -53,8 +53,8 @@ class ElisaElamusIE(InfoExtractor):
                 'title': ('Series', 'Name'),
                 'series':  ('Series', 'Name'),
                 'season':  ('Series', 'ChildSeriesCollection', 'Series', 'Name'),
-                'episode_number': self.episode_index(data, episode),
-            })
+            }),
+            'episode_number': self.episode_index(data, episode),
         }
         print(json.dumps(res))
         return res
