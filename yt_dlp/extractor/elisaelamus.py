@@ -68,6 +68,7 @@ class ElisaElamusIE(InfoExtractor):
                 'description': 'MediumSynopsis',
                 'release_year': ('ProductionDate', {int_or_none}),
                 'cast': ('Actors', 'Actor'),
+                'creators': ('Directors', 'Director'),
             }),
         }
         print(json.dumps(res))
