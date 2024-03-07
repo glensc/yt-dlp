@@ -39,22 +39,31 @@ class ElisaElamusIE(InfoExtractor):
         titles = traverse_obj(serie, ('Titles', 'Title'))
         return [i for i, t in enumerate(titles, start=1) if t["id"].endswith(id_only)][0]
 
+    def episode_data(self, data, episode_index: int):
+        serie = traverse_obj(data, ('Series', 'ChildSeriesCollection', 'Series'))[0]
+        titles = traverse_obj(serie, ('Titles', 'Title'))
+        episode = [t for i, t in enumerate(titles, start=1) if i == episode_index][0]
+        return episode
+
     def _real_extract(self, url):
         telecast_id, episode = self._match_valid_url(url).group('id', 'ep')
         episode = episode.replace("%3A", ":").replace("%7E", "~")
         video_id = join_nonempty(telecast_id, episode, delim='_')
         data = self.get_data(video_id)
+        episode_index = self.episode_index(data, episode)
+        episode_data = self.episode_data(data, episode_index)
 
         import json
         res = {
             'id': video_id,
-            'age_limit':  18 if traverse_obj(data, ('Series', 'IsAdult')) else None,
+            'age_limit': 18 if traverse_obj(data, ('Series', 'IsAdult')) else None,
             **traverse_obj(data, {
                 'title': ('Series', 'Name'),
-                'series':  ('Series', 'Name'),
-                'season':  ('Series', 'ChildSeriesCollection', 'Series', 'Name'),
+                'series': ('Series', 'Name'),
+                'season': ('Series', 'ChildSeriesCollection', 'Series', 'Name'),
             }),
-            'episode_number': self.episode_index(data, episode),
+            'episode_number': episode_index,
+            'duration': episode_data["DurationInSeconds"],
         }
         print(json.dumps(res))
         return res
