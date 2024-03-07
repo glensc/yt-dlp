@@ -1,3 +1,5 @@
+import json
+
 from .common import InfoExtractor
 from .. import int_or_none
 from ..utils import (
@@ -6,9 +8,9 @@ from ..utils import (
 
 
 class ElisaElamusIE(InfoExtractor):
-    _VALID_URL = r'https://menu\.err\.ee/(?P<id>\d+)/'
+    _VALID_URL = r'https://elisaelamus\.ee(?:/huub)?/seriaalid/(?P<id>crid:[^?]+)'
     _TESTS = [{
-        'url': 'https://menu.err.ee/1609228458/video-ott-sepa-ja-mart-avandi-eesti-laulu-vaheklipp-tartu-24',
+        'url': 'https://elisaelamus.ee/seriaalid/crid:~~2F~~2Fschange~dotcom~~2F9469d800-ee7b-4e2a-8980-6303a3f68831?episode=crid%3A%7E%7E2F%7E%7E2Fschange.com%7E%7E2Fteeveekolm.ee%7E%7E2FTEEB2024020716150058',
         'md5': '1ff59d535310ac9c5cf5f287d8f91b2d',
         'info_dict': {
             'id': '1609145945',
@@ -30,37 +32,16 @@ class ElisaElamusIE(InfoExtractor):
 
     def _real_extract(self, url):
         video_id = self._match_id(url)
-        content_url = f"https://services.err.ee/api/v2/vodContent/getContentPageData?contentId={video_id}"
-        data = traverse_obj(self._download_json(content_url, video_id), ('data', 'mainContent'))
+        data = self.get_data(video_id)
+
         import json
-        print(json.dumps(data))
-
-        formats, subtitles = [], {}
-        for url in traverse_obj(data, ('medias', ..., 'src', 'hls')):
-            fmts, subs = self._extract_m3u8_formats_and_subtitles(url, video_id, 'mp4')
-            formats.extend(fmts)
-            subtitles = self._merge_subtitles(subtitles, subs)
-
         res = {
-            'id': video_id,
-            'formats': formats,
-            'subtitles': subtitles,
-            # Movies
             **traverse_obj(data, {
                 'title': 'heading',
                 'description': 'lead',
                 'release_year': ('year', {int_or_none}),
                 'timestamp': 'publicStart',
-            }),
-            # Shows
-            **(traverse_obj(data, {
-                'series': 'heading',
-                'series_id': ('rootContentId', {int_or_none}),
-                'episode': 'subHeading',
-                'season_number': ('season', {int_or_none}),
-                'episode_number': ('episode', {int_or_none}),
-                'episode_id': ('id', {int_or_none}),
-            }, get_all=False) if data.get('rootContentId') != '0' else {})
+            })
         }
         print(json.dumps(res))
         return res
